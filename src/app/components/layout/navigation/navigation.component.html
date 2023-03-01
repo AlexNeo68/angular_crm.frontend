@@ -1,0 +1,19 @@
+<mat-toolbar class="navigation-toolbar" color="primary">
+  <div>
+    <button mat-icon-button (click)="onSidenavToggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </div>
+
+  <span>NG CRM</span>
+
+  <div class="navigation-desctop">
+    <a
+      mat-button
+      color="accent"
+      *ngFor="let nav of navigationProps"
+      [routerLink]="nav.path"
+      >{{ nav.title }}</a
+    >
+  </div>
+</mat-toolbar>
