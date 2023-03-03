@@ -11,8 +11,10 @@ import { SidenavListComponent } from './components/layout/sidenav-list/sidenav-l
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { PreloaderInterceptor } from 'src/app/interceptors/preloader.interceptor';
-import { FormComponent } from './componens/form/form.component';
-import { LoginComponent } from './componens/login/login.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { LoginComponent } from 'src/app/components/login/login.component';
+import { FormComponent } from 'src/app/components/form/form.component';
+import { AuthInterceptor } from 'src/app/interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -30,11 +32,18 @@ import { LoginComponent } from './componens/login/login.component';
     AppRoutingModule,
     MaterialModule,
     HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: PreloaderInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
       multi: true,
     },
   ],
