@@ -1,1 +1,57 @@
-<p>form works!</p>
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="h4-title">Новый Лид</h1>
+      <p *ngIf="isLead" class="">Дополнительные продажи {{ addSaleCount }}</p>
+    </div>
+  </div>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="row">radio</div>
+    <div class="row">
+      <div formGroupName="linkPhone" class="row">
+        <div class="col-6">
+          <mat-form-field class="full-width">
+            <mat-label>Ссылка</mat-label>
+            <input
+              type="text"
+              matInput
+              formControlName="link"
+              [ngClass]="{
+                invalid: f['linkPhone'].get('link').hasError('RequireLinkPhone')
+              }"
+              placeholder="Ссылка"
+            />
+
+            <mat-error
+              *ngIf="f['linkPhone'].get('link').hasError('RequireLinkPhone')"
+            >
+              <div>Ссылка или телефон</div>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field class="full-width">
+            <mat-label>Телефон</mat-label>
+            <input
+              type="text"
+              matInput
+              formControlName="phone"
+              [ngClass]="{
+                invalid: f['linkPhone']
+                  .get('phone')
+                  .hasError('RequireLinkPhone')
+              }"
+              placeholder="Телефон"
+            />
+
+            <mat-error
+              *ngIf="f['linkPhone'].get('phone').hasError('RequireLinkPhone')"
+            >
+              <div>Ссылка или телефон</div>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
