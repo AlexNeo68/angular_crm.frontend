@@ -57,6 +57,8 @@ export class FormComponent implements OnInit {
   }
 
   initializeValues(): void {
+    this.isLead = true;
+    this.getAddSaleCount();
     this.getUnits();
     this.getSources();
     this.getStatuses();
@@ -84,8 +86,22 @@ export class FormComponent implements OnInit {
 
     this.onChangesIsLead();
   }
+  getAddSaleCount() {
+    this.leadService.addSaleCount().subscribe((data: number) => {
+      this.addSaleCount = data;
+    });
+  }
   onChangesIsLead() {
-    throw new Error('Method not implemented.');
+    this.form.get('is_lead').valueChanges.subscribe((val) => {
+      this.isLead = val;
+      this.form.controls['responsible_id'].setValidators(null);
+      if (!val) {
+        this.form.controls['responsible_id'].setValidators([
+          Validators.required,
+        ]);
+      }
+      this.form.controls['responsible_id'].updateValueAndValidity();
+    });
   }
   RequireLinkPhone():
     | import('@angular/forms').ValidatorFn
