@@ -16,6 +16,7 @@ import { LoginComponent } from 'src/app/components/login/login.component';
 import { FormComponent } from 'src/app/components/form/form.component';
 import { AuthInterceptor } from 'src/app/interceptors/auth.interceptor';
 import { LogoutInterceptor } from 'src/app/interceptors/logout.interceptor';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { LogoutInterceptor } from 'src/app/interceptors/logout.interceptor';
     SidenavListComponent,
     FormComponent,
     LoginComponent,
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,

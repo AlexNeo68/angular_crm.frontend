@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {
+  AbstractControl,
   FormBuilder,
   FormControl,
   FormGroup,
@@ -75,9 +76,9 @@ export class FormComponent implements OnInit {
       source_id: new FormControl('', Validators.required),
       unit_id: new FormControl('', Validators.required),
 
-      is_processed: new FormControl('', Validators.required),
-      is_express_delivery: new FormControl('', Validators.required),
-      is_add_sale: new FormControl('', Validators.required),
+      is_processed: new FormControl(''),
+      is_express_delivery: new FormControl(''),
+      is_add_sale: new FormControl(''),
 
       text: new FormControl(''),
       responsible_id: new FormControl(''),
@@ -147,5 +148,86 @@ export class FormComponent implements OnInit {
     return this.form.controls;
   }
 
-  onSubmit(): void {}
+  onSubmit() {
+    if (this.form.invalid) {
+      return;
+    }
+
+    if (this.isLead) {
+      // lead
+      this.lead = Object.assign(
+        this.form.value,
+        this.form.get('linkPhone').value
+      );
+      this.checkLead();
+    } else {
+      // task
+      this.task = Object.assign(
+        this.form.value,
+        this.form.get('linkPhone').value
+      );
+      this.storeTask();
+    }
+
+    this.form.reset({
+      is_processed: '0',
+      is_express_delivery: '0',
+      is_add_sale: '0',
+
+      text: '',
+      responsible_id: '',
+      is_lead: true,
+    });
+
+    //this.form.markAsUntouched();
+    //this.form.markAsPristine();
+    //this.form.updateValueAndValidity();
+
+    Object.keys(this.form.controls).forEach((key) => {
+      this.resetControlls(this.form.get(key));
+    });
+
+    this.resetControlls(this.f['linkPhone'].get('link'));
+    this.resetControlls(this.f['linkPhone'].get('phone'));
+
+    this.resetControlls(this.form);
+  }
+
+  resetControlls(obj: AbstractControl) {
+    obj.setErrors(null);
+    obj.markAsUntouched();
+    obj.markAsPristine();
+  }
+
+  checkLead() {
+    this.leadService.checkLead(this.lead).subscribe((data) => {
+      if (data.exist) {
+        this.lead.id = data.item.id;
+        this.updateLead();
+      } else {
+        this.storeLead();
+      }
+    });
+  }
+  storeLead() {
+    this.leadService.storeLead(this.lead).subscribe((data) => {
+      this.toastService.open('Saved', 'Close', {
+        duration: 2000,
+      });
+    });
+  }
+  updateLead() {
+    this.leadService.updateLead(this.lead).subscribe((data) => {
+      this.toastService.open('Saved', 'Close', {
+        duration: 2000,
+      });
+    });
+  }
+  storeTask() {
+    this.taskService.storeTask(this.task).subscribe((data) => {
+      this.toastService.open('Saved', 'Close', {
+        duration: 2000,
+      });
+    });
+  }
 }
