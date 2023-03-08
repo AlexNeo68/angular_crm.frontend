@@ -7,10 +7,10 @@ export class Lead {
   phone: string;
   link: string;
   count_create: number;
-  is_processed: number;
-  isQualityLead: number;
-  is_express_delivery: number;
-  is_add_sale: number;
+  is_processed: boolean;
+  isQualityLead: boolean;
+  is_express_delivery: boolean;
+  is_add_sale: boolean;
   source_id: number;
   unit_id: number;
   user_id: number;
@@ -18,4 +18,7 @@ export class Lead {
   statuses: Status[];
   unit: Unit;
   source: Source;
+  status: Status;
+  lastComment: string;
+  created_at_time: number;
 }
